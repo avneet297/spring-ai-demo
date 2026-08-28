@@ -26,7 +26,16 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public String chat(String query) {
-        String queryStr = "As an expert in coding and programing. Always write program in java . Now reply for this question :{query}";
+
+        var tutorials = chatClient
+                .prompt()
+                .user(query)
+                .call()
+                .content();
+
+        return tutorials;
+
+        /*String queryStr = "As an expert in coding and programing. Always write program in java . Now reply for this question :{query}";
 
         var tutorials = chatClient
                 .prompt()
@@ -34,7 +43,7 @@ public class ChatServiceImpl implements ChatService {
                 .call()
                 .content();
 
-        return tutorials;
+        return tutorials;*/
     }
 
     @Override
