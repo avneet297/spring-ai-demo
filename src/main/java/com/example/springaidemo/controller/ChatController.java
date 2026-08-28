@@ -19,9 +19,21 @@ public class ChatController {
 
     @GetMapping("/chat")
     public ResponseEntity<String> chat(@RequestParam String query){
-        //    return ResponseEntity.ok(chatService.chat(query));
-        //return ResponseEntity.ok(chatService.chatTemplateWithPromptTemplate("Spring", "spring exception"));
-        //return ResponseEntity.ok(chatService.chatTemplateWithFluentApi("Spring", "spring exception"));
+        return ResponseEntity.ok(chatService.chat(query));
+    }
+
+    @GetMapping("/chat/promptTemplate")
+    public ResponseEntity<String> chatTemplateWithPromptTemplate(){
+        return ResponseEntity.ok(chatService.chatTemplateWithPromptTemplate("Spring", "spring exception"));
+    }
+
+    @GetMapping("/chat/fluentApi")
+    public ResponseEntity<String> chatTemplateWithFluentApi(){
+        return ResponseEntity.ok(chatService.chatTemplateWithFluentApi("Spring", "spring exception"));
+    }
+
+    @GetMapping("/chat/resourceFile")
+    public ResponseEntity<String> chatTemplateWithResourceFile(){
         return ResponseEntity.ok(chatService.chatTemplateWithResourceFile());
     }
 }
