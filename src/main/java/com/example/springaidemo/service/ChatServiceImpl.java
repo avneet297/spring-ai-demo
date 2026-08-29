@@ -7,6 +7,7 @@ import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 
 import java.util.Map;
 
@@ -19,6 +20,9 @@ public class ChatServiceImpl implements ChatService {
 
     @Value("classpath:/prompts/system-message.st")
     private Resource systemMessage;
+
+    @Value("classpath:/prompts/system-message-stream.st")
+    private Resource systemMessageStream;
 
     public ChatServiceImpl(ChatClient chatClient) {
         this.chatClient = chatClient;
@@ -85,6 +89,18 @@ public class ChatServiceImpl implements ChatService {
                 .user(user ->
                         user.text(this.userMessage).param("concept", "Java iteration"))
                 .call()
+                .content();
+    }
+
+    @Override
+    public Flux<String> chatStream(String query){
+        return this.chatClient
+                .prompt()
+                .system(system ->
+                        system.text(this.systemMessageStream))
+                .user(user ->
+                        user.text(this.userMessage).param("concept", query))
+                .stream()
                 .content();
     }
 }

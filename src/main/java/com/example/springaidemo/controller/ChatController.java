@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Flux;
 
 @RestController
 @RequestMapping()
@@ -35,5 +36,10 @@ public class ChatController {
     @GetMapping("/chat/resourceFile")
     public ResponseEntity<String> chatTemplateWithResourceFile(){
         return ResponseEntity.ok(chatService.chatTemplateWithResourceFile());
+    }
+
+    @GetMapping("/chat/stream")
+    public ResponseEntity<Flux<String>> chatStream(@RequestParam String query){
+        return ResponseEntity.ok(chatService.chatStream(query));
     }
 }
