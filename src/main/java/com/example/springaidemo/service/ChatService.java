@@ -8,4 +8,5 @@ public interface ChatService {
     String chatTemplateWithFluentApi(String techName, String techExample);
     String chatTemplateWithResourceFile();
     Flux<String> chatStream(String query);
+    String chatMemory(String query, String conversationId);
 }

@@ -42,4 +42,9 @@ public class ChatController {
     public ResponseEntity<Flux<String>> chatStream(@RequestParam String query){
         return ResponseEntity.ok(chatService.chatStream(query));
     }
+
+    @GetMapping("/chat/memory")
+    public ResponseEntity<String> chatMemory(@RequestParam String query, @RequestParam String conversationId){
+        return ResponseEntity.ok(chatService.chatMemory(query, conversationId));
+    }
 }

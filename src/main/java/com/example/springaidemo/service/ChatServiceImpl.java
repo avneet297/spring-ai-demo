@@ -2,6 +2,7 @@ package com.example.springaidemo.service;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
+import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.beans.factory.annotation.Value;
@@ -101,6 +102,16 @@ public class ChatServiceImpl implements ChatService {
                 .user(user ->
                         user.text(this.userMessage).param("concept", query))
                 .stream()
+                .content();
+    }
+
+    @Override
+    public String chatMemory(String query, String conversationId){
+        return this.chatClient
+                .prompt()
+                .user(query)
+                .advisors(a -> a.param(ChatMemory.CONVERSATION_ID, conversationId))
+                .call()
                 .content();
     }
 }
