@@ -1,5 +1,6 @@
 package com.example.springaidemo.controller;
 
+import com.example.springaidemo.helper.Helper;
 import com.example.springaidemo.service.ChatService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,5 +47,11 @@ public class ChatController {
     @GetMapping("/chat/memory")
     public ResponseEntity<String> chatMemory(@RequestParam String query, @RequestParam String conversationId){
         return ResponseEntity.ok(chatService.chatMemory(query, conversationId));
+    }
+
+    @GetMapping("/rag/saveData")
+    public ResponseEntity<String> ragSaveData(){
+        chatService.saveData(Helper.getData());
+        return ResponseEntity.ok("Data saved successfully");
     }
 }

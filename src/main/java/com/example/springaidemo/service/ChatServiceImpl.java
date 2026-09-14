@@ -5,11 +5,15 @@ import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
+import org.springframework.ai.document.Document;
+import org.springframework.ai.vectorstore.VectorStore;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -25,8 +29,12 @@ public class ChatServiceImpl implements ChatService {
     @Value("classpath:/prompts/system-message-stream.st")
     private Resource systemMessageStream;
 
-    public ChatServiceImpl(ChatClient chatClient) {
+    @Autowired
+    private VectorStore vectorStore;
+
+    public ChatServiceImpl(ChatClient chatClient, VectorStore vectorStore) {
         this.chatClient = chatClient;
+        this.vectorStore = vectorStore;
     }
 
     @Override
@@ -113,5 +121,11 @@ public class ChatServiceImpl implements ChatService {
                 .advisors(a -> a.param(ChatMemory.CONVERSATION_ID, conversationId))
                 .call()
                 .content();
+    }
+
+    @Override
+    public void saveData(List<String> list) {
+        List<Document> documentList = list.stream().map(Document::new).toList();
+        this.vectorStore.add(documentList);
     }
 }
